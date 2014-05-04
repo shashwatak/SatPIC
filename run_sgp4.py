@@ -9,10 +9,12 @@ from jdcal import *
 NUM_SECONDS_IN_DAY = 86400
 TIME_TEMPLATE = '{:%Y-%m-%d %H:%M:%S}'
 
-phi_file = open('phi.csv', 'wb')
-theta_file = open('theta.csv', 'wb')
-phi_csv_writer = csv.writer(phi_file)
-theta_csv_writer = csv.writer(theta_file)
+x_file = open('x.csv', 'wb')
+y_file = open('y.csv', 'wb')
+z_file = open('z.csv', 'wb')
+x_csv_writer = csv.writer(x_file)
+y_csv_writer = csv.writer(y_file)
+z_csv_writer = csv.writer(z_file)
 
 def main():
     tle_list = []
@@ -22,8 +24,9 @@ def main():
             line2 = tlefile.readline()
             tle_list.append((line1, line2))
 
-    phi_file.write('dttm,value,label\n')
-    theta_file.write('dttm,value,label\n')
+    x_file.write('dttm,value,label\n')
+    y_file.write('dttm,value,label\n')
+    z_file.write('dttm,value,label\n')
 
     prev_sat = None
     prev_tle = None
@@ -55,8 +58,9 @@ def main():
         prev_sat = satellite
         prev_date = date
 
-    phi_file.close()
-    theta_file.close()
+    x_file.close()
+    y_file.close()
+    z_file.close()
 
 def propogate_over_range(satellite, date, min_time, max_time):
     # First we catch the previous satellite up to the midway point
@@ -67,12 +71,9 @@ def propogate_over_range(satellite, date, min_time, max_time):
         interval_date = increment_date_by_minutes(date, tsince)
         time_string = TIME_TEMPLATE.format(interval_date)
 
-        # transform rectangular coordinates to spherical coordinates
-        position_sp = spherical(position_eci)
-        velocity_sp = spherical(velocity_eci)
-
-        phi_csv_writer.writerow([time_string, position_sp[0], '0'])
-        theta_csv_writer.writerow([time_string, position_sp[1], '0'])
+        x_csv_writer.writerow([time_string, position_eci[0], '0'])
+        y_csv_writer.writerow([time_string, position_eci[1], '0'])
+        z_csv_writer.writerow([time_string, position_eci[2], '0'])
 
 def date_from_jds(jds):
     year, month, day, time_frac = jd2gcal(MJD_0, jds-MJD_0)
