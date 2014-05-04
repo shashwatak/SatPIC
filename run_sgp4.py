@@ -16,13 +16,15 @@ def main():
             line2 = tlefile.readline()
             tle_list.append((line1, line2))
 
-    # line1 = '1 25544U 98067A   13042.10021568  .00009549  00000-0  16043-3 0  1955'
-    # line2 = '2 25544 051.6484 014.6335 0012183 260.9055 192.8707 15.52430028815125'
-
     phi_file = open('phi.csv', 'wb')
     theta_file = open('theta.csv', 'wb')
-    phi_writer = csv.writer(phi_file)
-    theta_writer = csv.writer(theta_file)
+    phi_csv_writer = csv.writer(phi_file)
+    theta_csv_writer = csv.writer(theta_file)
+
+    phi_file.write('dttm,value,label\n')
+    theta_file.write('dttm,value,label\n')
+
+
 
     for tle in tle_list:
         line1, line2 = tle
@@ -48,8 +50,8 @@ def main():
         d = datetime(year, month, day, int(hours), int(minutes), int(seconds))
         time_string = '{:%Y-%m-%d %H:%M:%S}'.format(d)
 
-        phi_writer.writerow([time_string, position_sp[0], '0'])
-        theta_writer.writerow([time_string, position_sp[1], '0'])
+        phi_csv_writer.writerow([time_string, position_sp[0], '0'])
+        theta_csv_writer.writerow([time_string, position_sp[1], '0'])
 
 if __name__ == '__main__':
     main()
