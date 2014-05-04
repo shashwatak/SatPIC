@@ -69,6 +69,17 @@ def spherical(coords, gmst):
     latitude                = (atan2(Ze, sqrt ((Xe**2) + (Ye**2))))
     return [longitude, latitude, radius]
 
+# Coordinate Frame Transforms
+def spherical(coords):
+    Xe  = coords[0]
+    Ye  = coords[1]
+    Ze  = coords[2]
+    Re  = a   = 6378.137
+    radius                  = sqrt  (Xe**2 + Ye**2 + Ze**2) - Re
+    longitude               = (atan2(Ye, Xe))
+    latitude                = (atan2(Ze, sqrt ((Xe**2) + (Ye**2))))
+    return [longitude, latitude, radius]
+
 def eci_to_ecf(eci_coords, gmst):
     # ccar.colorado.edu/ASEN5070/handouts/coordsys.doc
     #

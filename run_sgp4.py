@@ -14,28 +14,23 @@ def main():
     now = datetime.today()
 
     # get current position and velocity in ECI
-    position_eci, velocity = satellite.propagate(now.year, now.month, now.day, now.hour, now.minute, now.second)
+    position_eci, velocity_eci = satellite.propagate(now.year, now.month, now.day, now.hour, now.minute, now.second)
 
     # Using GMST, transform ECI to various other frames
     gmst =  current_GMST(now)
-    position_ecf = eci_to_ecf (position_eci, gmst)
-    velocity_ecf = eci_to_ecf (velocity, gmst)
-    position_sp = spherical (position_ecf, gmst)
-    velocity_sp = spherical (velocity_ecf, gmst)
+    position_sp = spherical (position_eci)
+    velocity_sp = spherical (velocity_eci)
 
     path_points_eci = []
     path_points_eci.append( [ position_eci[0],
                                 position_eci[1],
                                 position_eci[2] ])
-    path_points_ecf = []
-    path_points_ecf.append( [ position_ecf[0],
-                                position_ecf[1],
-                                position_ecf[2] ])
     path_points_sp = []
-    path_points_sp.append( [ degrees_long(position_sp[0]),
-                             degrees_lat(position_sp[1]),
+    path_points_sp.append( [ position_sp[0],
+                             position_sp[1],
                              position_sp[2] ] )
-    print path_points_sp, path_points_ecf, path_points_eci
+    print path_points_sp
+    print path_points_eci
 
 if __name__ == '__main__':
     main()
